@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אוצרות בפיזיקה – האור | טוהר בוטבול</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --gold-dark: #8B6914;
+    --deep: #0A0A14;
+    --surface: #10101E;
+    --surface2: #181828;
+    --surface3: #20203A;
+    --text: #F0EDE4;
+    --text-muted: #9A9AB0;
+    --text-dim: #6060788;
+    --accent: #4FC3F7;
+    --accent2: #81C784;
+    --accent3: #FFB74D;
+    --border: rgba(201,168,76,0.2);
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── STARS BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5%  90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 45%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 33% 75%, rgba(255,255,255,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,20,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+  .nav-links a {
+    display: block;
+    padding: 0.4rem 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+  }
+
+  /* ─── PAGES ─── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 4rem 2rem;
+  }
+  .hero-rays {
+    position: absolute;
+    inset: 0;
+    background:
+      conic-gradient(from 270deg at 50% 0%, transparent 0deg, rgba(201,168,76,0.06) 15deg, transparent 30deg,
+        transparent 60deg, rgba(201,168,76,0.04) 75deg, transparent 90deg,
+        transparent 120deg, rgba(201,168,76,0.05) 135deg, transparent 150deg);
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(201,168,76,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 780px; }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    background: rgba(201,168,76,0.06);
+  }
+  .hero h1 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #F0D080 0%, #C9A84C 40%, #8B6914 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+  .hero-fact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.7rem 1.4rem;
+    font-size: 0.9rem;
+    color: var(--gold-light);
+  }
+  .hero-fact .label { color: var(--text-muted); font-size: 0.8rem; }
+  .prism-icon {
+    width: 180px;
+    height: 100px;
+    margin: 3rem auto 0;
+    position: relative;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .section-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 660px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0 3rem;
+    max-width: 80px;
+  }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); }
+  .card:hover::before { opacity: 1; }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(201,168,76,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+    color: var(--gold);
+  }
+  .card h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.75; }
+  .card-badge {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.7rem;
+    border-radius: 100px;
+  }
+
+  /* ─── PHYSICS DEEP DIVE ─── */
+  .physics-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  .physics-block h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 0.8rem;
+  }
+  .physics-block p { color: var(--text-muted); line-height: 1.85; margin-bottom: 1rem; }
+  .physics-block p:last-child { margin-bottom: 0; }
+  .formula-box {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.2rem 0;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.3rem;
+    text-align: center;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+  }
+  .formula-label {
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ─── SPECTRUM SVG ─── */
+  .spectrum-bar {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    background: linear-gradient(90deg,
+      #8B00FF 0%, #4400FF 10%, #0000FF 18%, #0088FF 25%,
+      #00BBFF 32%, #00FF88 42%, #88FF00 52%,
+      #FFFF00 58%, #FFB800 65%, #FF6600 75%, #FF0000 85%, #880000 100%);
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .spectrum-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── SCIENTISTS ─── */
+  .scientists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .scientist-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .scientist-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    background: rgba(201,168,76,0.12);
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+  .scientist-card h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .scientist-card .years { font-size: 0.8rem; color: var(--gold); margin-bottom: 0.3rem; }
+  .scientist-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.75; }
+  .scientist-card .discovery {
+    font-size: 0.78rem;
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+  }
+
+  /* ─── EXPERIMENTS ─── */
+  .experiment-block {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 640px) { .experiment-block { grid-template-columns: 1fr; } }
+  .exp-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: rgba(201,168,76,0.15);
+    line-height: 1;
+  }
+  .experiment-block h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 0.6rem;
+  }
+  .experiment-block p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 0.8rem; }
+  .exp-result {
+    background: var(--deep);
+    border-right: 3px solid var(--gold);
+    padding: 0.8rem 1rem;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.88rem;
+    color: var(--gold-light);
+    margin-top: 0.5rem;
+  }
+
+  /* ─── MIND MAP ─── */
+  .mindmap-container {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    overflow: auto;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 85vh;
+  }
+  .mindmap-container svg {
+    display: block;
+    min-width: 1400px;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ─── LINKS ─── */
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .link-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .link-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+  .link-icon {
+    width: 36px; height: 36px;
+    background: rgba(201,168,76,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: var(--gold);
+  }
+  .link-card h4 { font-size: 0.95rem; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
+  .link-card p { font-size: 0.82rem; color: var(--text-muted); }
+  .link-card .url { font-size: 0.75rem; color: var(--gold); margin-top: 0.4rem; }
+
+  /* ─── SUMMARY ─── */
+  .summary-box {
+    background: linear-gradient(135deg, var(--surface2) 0%, var(--surface3) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-box::after {
+    content: '☀';
+    position: absolute;
+    left: -0.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.03;
+    pointer-events: none;
+  }
+  .summary-box h3 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+  }
+  .summary-box p { color: var(--text-muted); line-height: 1.9; margin-bottom: 0.8rem; }
+  .summary-box p:last-child { margin-bottom: 0; }
+
+  /* ─── FEEDBACK ─── */
+  .feedback-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .feedback-block h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .feedback-block p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.8; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+  }
+  footer strong { color: var(--gold); }
+
+  /* ─── HIGHLIGHT NUMBERS ─── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.25s, transform 0.2s;
+    position: relative;
+  }
+  .stat:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+  .stat.active { border-color: var(--gold); }
+  .stat-num {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    display: block;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .stat-hint { font-size: 0.68rem; color: rgba(201,168,76,0.5); margin-top: 0.4rem; }
+
+  /* ─── STAT EXPLANATION PANEL ─── */
+  .stat-explanation {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    animation: fadeInDown 0.25s ease;
+  }
+  .stat-explanation.visible { display: block; }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .stat-explanation h4 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    margin-bottom: 0.7rem;
+  }
+  .stat-explanation p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.85;
+  }
+  .stat-explanation .close-btn {
+    position: absolute;
+    top: 0.8rem;
+    left: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .stat-explanation .close-btn:hover { color: var(--gold); }
+
+  /* ─── PRISM ANIMATION ─── */
+  @keyframes beam { from { opacity: 0.4; } to { opacity: 1; } }
+  .beam { animation: beam 2s ease-in-out infinite alternate; }
+
+  /* Tag pill */
+  .pill {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: var(--surface3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 100px;
+    padding: 0.2rem 0.7rem;
+    margin: 0.2rem;
+  }
+
+  .quote-block {
+    border-right: 3px solid var(--gold);
+    padding: 0.5rem 1.2rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.15rem;
+    color: var(--gold-light);
+    font-style: italic;
+    margin: 1.5rem 0;
+  }
+  .quote-block cite { display: block; font-size: 0.82rem; color: var(--text-muted); font-style: normal; margin-top: 0.4rem; font-family: 'Heebo', sans-serif; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="showPage('home')">☀ האור</a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">בית</a></li>
+      <li><a href="#" onclick="showPage('physics')" id="nav-physics">פיזיקה</a></li>
+      <li><a href="#" onclick="showPage('experiments')" id="nav-experiments">ניסויים</a></li>
+      <li><a href="#" onclick="showPage('scientists')" id="nav-scientists">מדענים</a></li>
+      <li><a href="#" onclick="showPage('mindmap')" id="nav-mindmap">מפת חשיבה</a></li>
+      <li><a href="#" onclick="showPage('links')" id="nav-links">מקורות</a></li>
+      <li><a href="#" onclick="showPage('summary')" id="nav-summary">סיכום</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<div class="page active" id="home">
+  <div class="hero">
+    <div class="hero-rays"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">אוצרות בפיזיקה · טוהר בוטבול · י״ב2</span>
+      <h1>אור</h1>
+      <p class="hero-sub">
+        מהירות של 299,792,458 מטר לשנייה. גל וחלקיק בו-זמנית. הבסיס לראייה, לטכנולוגיה, ולהבנת היקום. ברוכים הבאות לעולם הפיזיקה של האור.
+      </p>
+      <div class="hero-fact">
+        <span class="label">מהירות האור בריק·</span>
+        <strong>c = 299,792,458 מ׳/ש׳</strong>
+      </div>
+
+      <!-- Prism SVG illustration -->
+      <svg width="280" height="140" viewBox="0 0 280 140" style="margin: 3rem auto; display:block;" xmlns="http://www.w3.org/2000/svg">
+        <!-- White beam entering -->
+        <line x1="0" y1="70" x2="90" y2="70" stroke="rgba(240,208,128,0.8)" stroke-width="6" class="beam"/>
+        <!-- Prism -->
+        <polygon points="90,20 160,110 20,110" transform="translate(70,0)" fill="rgba(200,180,255,0.08)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+        <!-- Rainbow rays -->
+        <line x1="185" y1="70" x2="280" y2="20" stroke="#8B00FF" stroke-width="3" opacity="0.85"/>
+        <line x1="185" y1="72" x2="280" y2="33" stroke="#0000FF" stroke-width="3" opacity="0.85"/>
+        <line x1="185" y1="74" x2="280" y2="48" stroke="#00BBFF" stroke-width="3" opacity="0.85"/>
+        <line x1="185" y1="76" x2="280" y2="63" stroke="#00FF88" stroke-width="3" opacity="0.85"/>
+        <line x1="185" y1="78" x2="280" y2="78" stroke="#FFFF00" stroke-width="3" opacity="0.85"/>
+        <line x1="185" y1="80" x2="280" y2="93" stroke="#FF8800" stroke-width="3" opacity="0.85"/>
+        <line x1="185" y1="82" x2="280" y2="108" stroke="#FF0000" stroke-width="3" opacity="0.85"/>
+        <text x="140" y="128" text-anchor="middle" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Heebo,sans-serif">פריזמה</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Quick stats -->
+  <div class="section" style="padding-top:2rem;">
+    <div class="stat-row">
+      <div class="stat" onclick="toggleStat('stat-nm')" id="stat-nm-btn">
+        <span class="stat-num">380–780</span>
+        <div class="stat-label">ננומטר – אור נראה</div>
+        <div class="stat-hint">לחצי להסבר ▾</div>
+      </div>
+      <div class="stat" onclick="toggleStat('stat-emc')" id="stat-emc-btn">
+        <span class="stat-num">c²</span>
+        <div class="stat-label">E=mc² – אנרגיה ואור</div>
+        <div class="stat-hint">לחצי להסבר ▾</div>
+      </div>
+      <div class="stat" onclick="toggleStat('stat-8min')" id="stat-8min-btn">
+        <span class="stat-num">~8 דקות</span>
+        <div class="stat-label">מהשמש לכדור הארץ</div>
+        <div class="stat-hint">לחצי להסבר ▾</div>
+      </div>
+      <div class="stat" onclick="toggleStat('stat-1905')" id="stat-1905-btn">
+        <span class="stat-num">1905</span>
+        <div class="stat-label">אינשטיין – אפקט פוטואלקטרי</div>
+        <div class="stat-hint">לחצי להסבר ▾</div>
+      </div>
+      <div class="stat" onclick="toggleStat('stat-inf')" id="stat-inf-btn">
+        <span class="stat-num">∞</span>
+        <div class="stat-label">האור אינו מאט ביקום הריק</div>
+        <div class="stat-hint">לחצי להסבר ▾</div>
+      </div>
+    </div>
+
+    <!-- Explanation panels -->
+    <div class="stat-explanation" id="stat-nm">
+      <button class="close-btn" onclick="closeStat('stat-nm')">✕</button>
+      <h4>380–780 ננומטר – אור נראה</h4>
+      <p>הספקטרום האלקטרומגנטי עצום לאין שיעור – מגלי רדיו שאורכם קילומטרים ועד קרני גמא שאורכן קטן מגרעין אטום. מתוך כל הטווח הזה, העין האנושית קולטת רצועה זעירה בלבד: גלים שאורכם בין 380 ל-780 ננומטר (ננומטר = מיליארדית המטר). 380 ננומטר הוא הסגול הכהה שבקצה אחד, ו-780 ננומטר הוא האדום העמוק בקצה השני. מתחת ל-380 זה UV שאנחנו לא רואים, ומעל 780 זה אינפרא-אדום – גם הוא בלתי נראה. בעצם, ה"צבעים" שאנחנו רואים הם פשוט הדרך שהמוח מפרש אורכי גל שונים בתוך הרצועה הצרה הזו.</p>
+    </div>
+    <div class="stat-explanation" id="stat-emc">
+      <button class="close-btn" onclick="closeStat('stat-emc')">✕</button>
+      <h4>E=mc² – אנרגיה ואור</h4>
+      <p>הנוסחה של איינשטיין אומרת שאנרגיה ומסה הן בעצם אותו דבר, רק בצורות שונות. c כאן הוא מהירות האור – 300,000 ק"מ לשנייה – ולכן c² הוא מספר עצום (כ-90 מיליארד). זה אומר שגם כמות קטנה מאוד של מסה מכילה כמות אדירה של אנרגיה. הפוטון – חלקיק האור – הוא המקרה הקיצוני: מסה אפסית, אבל נע במהירות האור המקסימלית ונושא אנרגיה. הנוסחה מסבירה גם למה שום דבר בעל מסה לא יכול להגיע למהירות האור – ככל שמאיצים גוף, "מסתו" האפקטיבית גדלה, ונדרשת אנרגיה אינסופית כדי לגשר על הפער האחרון.</p>
+    </div>
+    <div class="stat-explanation" id="stat-8min">
+      <button class="close-btn" onclick="closeStat('stat-8min')">✕</button>
+      <h4>~8 דקות מהשמש לכדור הארץ</h4>
+      <p>המרחק בין כדור הארץ לשמש הוא כ-150 מיליון קילומטר. מהירות האור היא 300,000 ק"מ לשנייה – לכן האור עושה את הדרך בכ-8 דקות ו-20 שניות. המשמעות: כשאנחנו רואים את השמש, אנחנו רואים אותה כפי שהייתה לפני 8 דקות, לא "עכשיו". אם השמש הייתה נכבית ברגע זה, היינו ממשיכים לראות אותה זוהרת עוד 8 דקות לפני שהחשיכה מגיעה. לגבי כוכבים רחוקים זה הרבה יותר דרמטי – כוכב ב-100 שנות אור נראה לנו כפי שהיה לפני 100 שנה, וייתכן שכבר לא קיים כלל.</p>
+    </div>
+    <div class="stat-explanation" id="stat-1905">
+      <button class="close-btn" onclick="closeStat('stat-1905')">✕</button>
+      <h4>1905 – איינשטיין והאפקט הפוטואלקטרי</h4>
+      <p>ב-1905 איינשטיין פרסם את המאמר שזיכה אותו בפרס נובל – לא יחסות הפרטית! הוא הסביר תופעה מוזרה: כשמאירים אור על מתכת, יוצאים ממנה אלקטרונים – אבל לא תמיד, ולא לפי הכמות שציפו. הפיזיקה הקלאסית לא הצליחה להסביר זאת. איינשטיין הציע שהאור לא זורם רציף אלא מגיע בחבילות נפרדות – פוטונים – וכל פוטון נושא אנרגיה שתלויה בתדירות האור, לא בעוצמתו. פוטון בודד עם תדירות גבוהה מספיק יכול לשחרר אלקטרון; הרבה פוטונים בתדירות נמוכה מדי – לא. זה היה הרגע שבו נולדה תורת הקוונטים.</p>
+    </div>
+    <div class="stat-explanation" id="stat-inf">
+      <button class="close-btn" onclick="closeStat('stat-inf')">✕</button>
+      <h4>∞ – האור אינו מאט ביקום הריק</h4>
+      <p>בריק המוחלט, האור נע תמיד בדיוק 299,792,458 מטר בשנייה – לא יותר, לא פחות. זו אחת הקבועים הבסיסיים של הטבע. האור מאט רק כשהוא עובר דרך חומר (מים, זכוכית) – כי הפוטונים נבלעים ונפלטים מחדש על ידי האטומים, מה שמאט את הקצב הממוצע. אבל ביקום, בין גלקסיות, לא קיים דבר שמאיט אותו. תורת היחסות הפרטית אומרת שמהירות זו זהה לכל המשקיפים בכל מסגרת ייחוס – תכונה מהפכנית שהפילה את תפיסת הזמן האבסולוטי של ניוטון.</p>
+    </div>
+
+    <!-- Intro cards -->
+    <div class="section-tag">מה תמצאי כאן</div>
+    <h2 class="section-title">יקום של אור</h2>
+    <p class="section-lead">אתר זה חוקרת את תופעת האור מכל זווית: מתיאוריות פיזיקליות עמוקות, דרך ניסויים היסטוריים מכוננים, ועד השימושים הטכנולוגיים שמעצבים את חיינו.</p>
+    <hr class="divider">
+
+    <div class="cards-grid">
+      <div class="card" onclick="showPage('physics')">
+        <div class="card-icon">⚛</div>
+        <h3>הפיזיקה של האור</h3>
+        <p>דואליות גל-חלקיק, ספקטרום אלקטרומגנטי, השתקפות ושבירה, אפקט פוטואלקטרי ועוד תופעות יסוד מרתקות.</p>
+        <span class="card-badge">פיזיקה עמוקה</span>
+      </div>
+      <div class="card" onclick="showPage('experiments')">
+        <div class="card-icon">🔬</div>
+        <h3>ניסויים מכוננים</h3>
+        <p>מניסוי ינגה בשני-סדקים ועד לניסוי מייקלסון-מורלי – הניסויים שעיצבו את הבנת האור לנצח.</p>
+        <span class="card-badge">היסטוריה מדעית</span>
+      </div>
+      <div class="card" onclick="showPage('scientists')">
+        <div class="card-icon">🧠</div>
+        <h3>פיזיקאים בתחום</h3>
+        <p>ניוטון, מקסוול, אינשטיין, פלנק – הגאונים שהבינו את טבע האור ושינו את המדע.</p>
+        <span class="card-badge">ביוגרפיות</span>
+      </div>
+      <div class="card" onclick="showPage('mindmap')">
+        <div class="card-icon">🗺</div>
+        <h3>מפת חשיבה</h3>
+        <p>ארגון ויזואלי היררכי של כלל מושגי האור – מהמאקרו לסאב-אטומי.</p>
+        <span class="card-badge">ויזואליזציה</span>
+      </div>
+      <div class="card" onclick="showPage('links')">
+        <div class="card-icon">🔗</div>
+        <h3>מקורות ומאמרים</h3>
+        <p>קישורים לסרטונים, מאמרים מדעיים, סימולציות ומשאבים מומלצים לחקר עמוק יותר.</p>
+        <span class="card-badge">חקר נוסף</span>
+      </div>
+      <div class="card" onclick="showPage('summary')">
+        <div class="card-icon">📝</div>
+        <h3>סיכום ורפלקציה</h3>
+        <p>מסקנות, תהליך הלמידה, ומשוב עמיתים – מה למדתי ומה נישאר לחקור.</p>
+        <span class="card-badge">רפלקציה</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PHYSICS ═══════════════ -->
+<div class="page" id="physics">
+  <div class="section">
+    <div class="section-tag">נושאים פיזיקליים</div>
+    <h1 class="section-title">הפיזיקה של האור</h1>
+    <p class="section-lead">האור הוא אחת התופעות הפיזיקליות המרתקות ביותר. הוא מתנהג גם כגל וגם כחלקיק, נע במהירות עצומה, ומעביר אנרגיה בצורת פוטונים. להלן עיון מעמיק בתופעות המרכזיות.</p>
+
+    <!-- Spectrum -->
+    <div class="physics-block">
+      <h3>הספקטרום האלקטרומגנטי</h3>
+      <p>האור הנראה הוא רק חלק קטן מהספקטרום האלקטרומגנטי – סוג של קרינה חשמלית-מגנטית הנעה בצורת גלים. הספקטרום כולל גלים בעלי אורכי גל שונים, החל מגלי רדיו הארוכים ועד לקרני גמא הקצרות ועוצמתיות.</p>
+
+      <div class="spectrum-bar"></div>
+      <div class="spectrum-labels">
+        <span>800nm+ (תת-אדום)</span>
+        <span>700nm (אדום)</span>
+        <span>589nm (כתום-צהוב)</span>
+        <span>450nm (כחול)</span>
+        <span>380nm- (על-סגול)</span>
+      </div>
+
+      <p style="margin-top:1.5rem;">האור הנראה נמצא בטווח 380–780 ננומטר בלבד. מעבר לקצוות – בשני הכיוונים – נמצאים סוגי קרינה שאיננו רואים, אך הם חלק אינטגרלי מהספקטרום האלקטרומגנטי.</p>
+
+      <div class="two-col" style="margin-top:1.5rem;">
+        <div style="background:var(--deep);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+          <div style="font-size:0.78rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">סוגי קרינה – מהקצר לארוך</div>
+          <div style="font-size:0.88rem;color:var(--text-muted);line-height:2;">
+            קרני גמא · קרני X (רנטגן) · על-סגול (UV) ·<strong style="color:var(--gold)"> אור נראה </strong>· תת-אדום (IR) · גלי מיקרו · גלי רדיו
+          </div>
+        </div>
+        <div style="background:var(--deep);border:1px solid var(--border);border-radius:8px;padding:1rem;">
+          <div style="font-size:0.78rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">נוסחת הגל הבסיסית</div>
+          <div class="formula-box" style="margin:0.5rem 0 0.3rem;">c = λ · f</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">c = מהירות האור | λ = אורך גל | f = תדירות</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave-particle duality -->
+    <div class="physics-block">
+      <h3>דואליות גל–חלקיק</h3>
+      <p>אחת הגילויים המהפכניים של המאה ה-20 היא שאור מתנהג גם כגל וגם כחלקיק – תלוי בדרך שבה מודדים אותו. כשהאור עובר דרך שני סדקים צרים, הוא יוצר דוגמת התאבכות – תופעת גל טיפוסית. אך כשהוא פוגע בלוח מתכת, הוא מוסר אנרגיה בנתחים בדידים – פוטונים.</p>
+      <div class="formula-box">E = h · f</div>
+      <div class="formula-label">אנרגיית פוטון = קבוע פלנק × תדירות האור</div>
+      <p>קבוע פלנק h = 6.626 × 10⁻³⁴ ג'אול·שניה. ככל שתדירות האור גבוהה יותר (אורך גל קצר יותר), כך אנרגיית הפוטון גדולה יותר. לכן קרני UV מסוכנות יותר לעור מאשר אור נראה.</p>
+      <div class="quote-block">
+        "בלי מדידה אין משמעות. האור הוא גל כשאנחנו לא מסתכלים, וחלקיק כשאנחנו מסתכלים."
+        <cite>— רוח עקרונות מכניקת הקוונטים</cite>
+      </div>
+    </div>
+
+    <!-- Reflection & Refraction -->
+    <div class="physics-block">
+      <h3>השתקפות ושבירה</h3>
+      <p><strong style="color:var(--text);">השתקפות</strong> מתרחשת כאשר קרן אור פוגעת בפני שטח ומוחזרת ממנה. חוק ההשתקפות אומר שזווית הפגיעה שווה לזווית ההשתקפות, שתיהן ביחס לנורמלה לפני השטח.</p>
+      <div class="formula-box">θᵢ = θᵣ</div>
+      <div class="formula-label">זווית פגיעה = זווית השתקפות</div>
+      <p><strong style="color:var(--text);">שבירה</strong> מתרחשת כאשר אור עובר מחומר אחד לאחר (למשל מאוויר לזכוכית). המהירות משתנה, ולכן הכיוון משתנה. זה מוסבר ב<strong style="color:var(--text);">חוק סנל</strong>:</p>
+      <div class="formula-box">n₁ · sin(θ₁) = n₂ · sin(θ₂)</div>
+      <div class="formula-label">n = מדד שבירה | θ = זווית ביחס לנורמלה</div>
+      <p>מדד השבירה של זכוכית הוא ~1.5, כלומר האור נע בה 1.5 פעמים לאט יותר מבריק. הפריזמה מנצלת עובדה שמדד השבירה תלוי בתדירות האור, ולכן צבעים שונים נשברים בזוויות שונות – ומתפצלים לקשת.</p>
+    </div>
+
+    <!-- Photoelectric effect -->
+    <div class="physics-block">
+      <h3>האפקט הפוטואלקטרי</h3>
+      <p>ב-1905 הסביר אלברט אינשטיין תופעה מוזרה: כשמאירים מתכת באור בתדירות מספיק גבוהה, היא פולטת אלקטרונים. גישה גלית לא הצליחה להסביר זאת – אך מודל הפוטון הסביר בצורה מושלמת.</p>
+      <p>התובנה הגדולה: לא עוצמת האור קובעת אם אלקטרון ייפלט, אלא <em>תדירותו</em>. כל פוטון חייב להיות בעל אנרגיה מינימלית הנקראת "פונקציית עבודה" (φ) של המתכת:</p>
+      <div class="formula-box">Eₖ = hf − φ</div>
+      <div class="formula-label">אנרגיה קינטית מקסימלית של האלקטרון = אנרגיית פוטון − פונקציית עבודה</div>
+      <p>על גילוי זה קיבל אינשטיין את פרס נובל בפיזיקה לשנת 1921 – לא על תורת היחסות!</p>
+    </div>
+
+    <!-- Rayleigh scattering -->
+    <div class="physics-block">
+      <h3>🌅 למה השמיים כחולים? למה השקיעה אדומה? ולמה הקשת בקשת?</h3>
+      <p>שלוש התופעות היפות ביותר שרואים בעין עירומה – ולכולן הסבר פיזיקלי אחיד שמבוסס על <strong style="color:var(--text);">פיזור ריילי</strong> ועל שבירת האור.</p>
+
+      <div class="two-col" style="margin-bottom:1.2rem;">
+        <div style="background:var(--deep);border:1px solid var(--border);border-radius:8px;padding:1.2rem;">
+          <div style="font-size:0.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">☀ שמיים כחולים – פיזור ריילי</div>
+          <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.8;">כשאור השמש (שהוא לבן = כל הצבעים ביחד) נכנס לאטמוספרה, הוא פוגע במולקולות גז קטנות. הפיזיקאי ריילי גילה שמולקולות קטנות מפזרות אור כחול (אורך גל קצר) בעוצמה פי 4 גדולה יותר מאור אדום. לכן האור הכחול מתפזר לכל הכיוונים ומגיע לעינינו מכל נקודה בשמיים – ואנחנו רואים שמיים כחולים.</p>
+        </div>
+        <div style="background:var(--deep);border:1px solid var(--border);border-radius:8px;padding:1.2rem;">
+          <div style="font-size:0.78rem;color:var(--accent3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">🌇 שקיעה אדומה – נתיב ארוך</div>
+          <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.8;">בשקיעה, אור השמש עובר נתיב ארוך בהרבה דרך האטמוספרה (כי השמש נמוכה באופק). כל האור הכחול כבר התפזר ונעלם בדרך. מה שנשאר? האדום, הכתום והצהוב – הצבעים בעלי אורך הגל הארוך שמתפזרים פחות ומצליחים להגיע אלינו. לכן שקיעות הן אדומות וכתומות.</p>
+        </div>
+      </div>
+
+      <div style="background:var(--deep);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1.2rem;">
+        <div style="font-size:0.78rem;color:var(--accent2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;">🌈 קשת בענן – שבירה + השתקפות</div>
+        <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.8;">קשת נוצרת כשאור השמש נכנס לטיפת מים, נשבר (שבירה = refraction), מוחזר מדופן הטיפה הפנימית (השתקפות), ויוצא החוצה כשהוא נשבר שוב. מכיוון שמדד השבירה תלוי בתדירות האור, כל צבע יוצא בזווית קצת שונה – ולכן הצבעים נפרדים לקשת. הסדר תמיד: אדום בחוץ (זווית 42°), סגול בפנים (זווית 40°). שני הטיפות השונות מחזירות את הצבעים השונים לעיננו.</p>
+      </div>
+
+      <div class="formula-box" style="font-size:1rem;">I ∝ 1 / λ⁴ · (פיזור ריילי: עוצמת הפיזור הפוכה ביחס לאורך הגל בחזקת 4)</div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.7rem;">לאור כחול (λ≈450nm) פיזור גדול פי ~5.5 מלאור אדום (λ≈700nm). זה ההבדל שגורם לכל שלוש התופעות.</p>
+    </div>
+
+    <!-- Speed of light -->
+    <div class="physics-block">
+      <h3>מהירות האור ותורת היחסות</h3>
+      <p>מהירות האור בריק – c = 299,792,458 מ׳/ש׳ – היא אחד הקבועים הבסיסיים ביותר בטבע. לפי תורת היחסות המיוחדת של אינשטיין (1905), לא ייתכן שגוף בעל מסה יאיץ עד למהירות האור.</p>
+      <div class="formula-box">E = mc²</div>
+      <div class="formula-label">אנרגיה = מסה × מהירות האור בריבוע</div>
+      <p>בתוך חומרים שקופים, האור נע לאט יותר. היחס בין מהירות האור בריק לבין מהירותו בחומר הוא מדד השבירה n. בזכוכית n≈1.5, במים n≈1.33, ביהלום n≈2.42.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EXPERIMENTS ═══════════════ -->
+<div class="page" id="experiments">
+  <div class="section">
+    <div class="section-tag">ניסויים היסטוריים</div>
+    <h1 class="section-title">ניסויים מכוננים</h1>
+    <p class="section-lead">חמישה ניסויים שעיצבו את הבנתי לגבי אור – מהמאה ה-17 ועד המאה ה-20.</p>
+
+    <div class="experiment-block">
+      <div class="exp-num">01</div>
+      <div>
+        <h3>ניסוי שני-הסדקים של יאנג (1801)</h3>
+        <p>תומאס יאנג הכניס קרן אור דרך שני סדקים צרים וקיבל דוגמת פסים בהירים וחשוכים על מסך. זהו הוכחה מכרעת ש<strong style="color:var(--text);">האור הוא גל</strong>, שכן רק גלים יכולים להתאבך – לחיזוק הדדי (פסים בהירים) ולביטול הדדי (פסים חשוכים).</p>
+        <p>מאוחר יותר בוצע הניסוי עם פוטונים בודדים – וגם אז נוצרה דוגמת ההתאבכות! זה הוכיח את הדואליות גל-חלקיק.</p>
+        <div class="exp-result">💡 תוצאה: האור מתנהג כגל. נוסחת פסי ההתאבכות: d·sinθ = mλ (d=מרחק בין הסדקים, m=סדר ההתאבכות)</div>
+      </div>
+    </div>
+
+    <div class="experiment-block">
+      <div class="exp-num">02</div>
+      <div>
+        <h3>ניסוי מייקלסון-מורלי (1887)</h3>
+        <p>אלברט מייקלסון וסטיבן מורלי ניסו למדוד את מהירות האור ביחס ל"אתר" – החומר שסברו שהאור מתנהל בו. הם פיצלו קרן אור לשני נתיבים ניצבים ושוב איחדו אותם. הציפייה: הנתיב בכיוון תנועת כדור הארץ באתר יחזיר זמן שונה.</p>
+        <p>התוצאה המדהימה: לא נמצא הבדל! מהירות האור זהה בכל הכיוונים. ניסוי זה הפריך את תורת האתר וסלל את הדרך לתורת היחסות של אינשטיין.</p>
+        <div class="exp-result">💡 תוצאה: מהירות האור קבועה (c) ובלתי תלויה בכיוון – ובסופו של דבר, גם בתנועת המקור/מנגלה.</div>
+      </div>
+    </div>
+
+    <div class="experiment-block">
+      <div class="exp-num">03</div>
+      <div>
+        <h3>ניסוי האפקט הפוטואלקטרי (מילקן, 1916)</h3>
+        <p>רוברט מילקן ביצע מדידות מדויקות של האפקט הפוטואלקטרי, בציפייה להפריך את תיאורית הפוטון של אינשטיין. בפועל, תוצאותיו אישרו את התיאוריה בדיוק יוצא דופן – ובעקיפין אישרו את ערך קבוע פלנק h.</p>
+        <p>מילקן קיבל פרס נובל ב-1923 – חלקית בשל ניסוי שתכנן להפריך תיאוריה שבסופו אישר אותה.</p>
+        <div class="exp-result">💡 תוצאה: מדידת קבוע פלנק h=6.626×10⁻³⁴ J·s ואישור מודל הפוטון.</div>
+      </div>
+    </div>
+
+    <div class="experiment-block">
+      <div class="exp-num">04</div>
+      <div>
+        <h3>ניסוי השתקפות מלאה פנימית (לייזר)</h3>
+        <p>כאשר אור עובר מחומר בעל מדד שבירה גבוה (כמו זכוכית) לחומר עם מדד שבירה נמוך (כמו אוויר), ובזווית מעבר לזווית הקריטית – האור <strong style="color:var(--text);">אינו יוצא כלל</strong> ומוחזר לגמרי. תופעה זו נקראת השתקפות מלאה פנימית, והיא הבסיס לסיבים אופטיים.</p>
+        <div class="formula-box" style="font-size:1rem;">θ꜀ = arcsin(n₂/n₁)</div>
+        <div class="exp-result">💡 יישום: סיבים אופטיים לתקשורת מהירה עובדים על עיקרון זה – האור "כלוא" בסיב ואינו יוצא.</div>
+      </div>
+    </div>
+
+    <div class="experiment-block">
+      <div class="exp-num">05</div>
+      <div>
+        <h3>ניסוי פיזו למדידת מהירות האור (1849)</h3>
+        <p>ארמאן פיזו היה הראשון למדוד מהירות האור בעזרת ציוד ארצי (לא אסטרונומי). הוא שלח קרן אור דרך שקע בגלגל שיניים מסתובב, שיקף אותה ממראה במרחק 8.6 ק"מ, ומדד באיזו מהירות סיבוב הגלגל חוסם את האור החוזר.</p>
+        <p>התוצאה: c ≈ 313,000 ק"מ/ש׳ – שגיאה של ~4.5% מהערך האמיתי, אך הישג מדהים לשנת 1849.</p>
+        <div class="exp-result">💡 חשיבות: הניסוי הוכיח שניתן למדוד את מהירות האור בניסוי ארצי וסלל הדרך למדידות מדויקות יותר.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SCIENTISTS ═══════════════ -->
+<div class="page" id="scientists">
+  <div class="section">
+    <div class="section-tag">ביוגרפיות</div>
+    <h1 class="section-title">פיזיקאים בתחום האור</h1>
+    <p class="section-lead">הגאונים שחשפו את סודות האור – מניוטון שפיצל את הלבן לקשת, ועד לפיזיקאים קוונטיים שגילו את הפוטון.</p>
+
+    <div class="scientists-grid">
+      <div class="scientist-card">
+        <div class="scientist-avatar">N</div>
+        <div>
+          <div class="years">1643–1727 · אנגליה</div>
+          <h3>אייזק ניוטון</h3>
+          <p>הוכיח שאור לבן מורכב מכל צבעי הקשת. ב-1666 עבר פריזמה ופיצל קרן שמש לספקטרום מלא. טען שאור הוא "קורפוסקולות" – חלקיקים קטנים.</p>
+          <div class="discovery">📖 ספר: Opticks (1704)</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">H</div>
+        <div>
+          <div class="years">1629–1695 · הולנד</div>
+          <h3>כריסטיאן הויגנס</h3>
+          <p>פיתח תיאוריית גל האור. עקרון הויגנס מסביר כיצד גל מתפשט – כל נקודה על חזית גל יוצרת גלים חדשים. ניצח בוויכוח עם ניוטון על טבע האור – ובצדק.</p>
+          <div class="discovery">🌊 עקרון הויגנס לגל</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">Y</div>
+        <div>
+          <div class="years">1773–1829 · אנגליה</div>
+          <h3>תומאס יאנג</h3>
+          <p>ניסוי שני-הסדקים (1801) הוכיח באופן מכריע שאור הוא גל. חישב את אורכי גל הצבעים השונים בדייקנות מרשימה. גם תרם לקריאת ירוגליפים מצריים.</p>
+          <div class="discovery">〰 ניסוי שני הסדקים</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">M</div>
+        <div>
+          <div class="years">1831–1879 · סקוטלנד</div>
+          <h3>ג'יימס קלרק מקסוול</h3>
+          <p>איחד חשמל, מגנטיות ואור תחת מסגרת אחת – משוואות מקסוול (1865). חזה שהאור הוא גל אלקטרומגנטי שמתפשט במהירות c, וחישב את c מקבועים חשמליים-מגנטיים בלבד.</p>
+          <div class="discovery">⚡ משוואות מקסוול</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">P</div>
+        <div>
+          <div class="years">1858–1947 · גרמניה</div>
+          <h3>מקס פלנק</h3>
+          <p>ב-1900 פיתח את עקרון הקוונטיזציה: אנרגיה נפלטת ונקלטת בנתחים בדידים (קוונטות) ולא ברצף. הציג את קבוע פלנק h שנושא את שמו. מייסד תיאוריית הקוונטים.</p>
+          <div class="discovery">⚛ E=hf · פרס נובל 1918</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">E</div>
+        <div>
+          <div class="years">1879–1955 · גרמניה/ארה"ב</div>
+          <h3>אלברט אינשטיין</h3>
+          <p>ב-1905 הסביר האפקט הפוטואלקטרי דרך "קוונטות אור" – מה שנקרא לאחר מכן פוטונים. גם פיתח תורת היחסות המיוחדת שבמרכזה מהירות האור כקבוע יסוד.</p>
+          <div class="discovery">💡 פרס נובל 1921 – פוטון</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">C</div>
+        <div>
+          <div class="years">1888–1962 · ארה"ב</div>
+          <h3>ארתור קומפטון</h3>
+          <p>ניסוי קומפטון (1923) הראה שפוטון יכול להתנגש באלקטרון ולהחליף איתו תנע – בדיוק כמו חלקיקים קלאסיים. זה אישר סופית את טבע החלקיקי של האור.</p>
+          <div class="discovery">☢ פיזור קומפטון · נובל 1927</div>
+        </div>
+      </div>
+
+      <div class="scientist-card">
+        <div class="scientist-avatar">F</div>
+        <div>
+          <div class="years">1918–1988 · ארה"ב</div>
+          <h3>ריצ'רד פיינמן</h3>
+          <p>פיתח את אלקטרודינמיקה קוונטית (QED) – התיאוריה המדויקת ביותר הקיימת לתיאור האינטראקציה בין אור לחומר. ידוע גם בהסברים פשוטים ומבריקים על טבע האור.</p>
+          <div class="discovery">⚡ QED · פרס נובל 1965</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MIND MAP ═══════════════ -->
+<div class="page" id="mindmap">
+  <div class="section">
+    <div class="section-tag">ארגון ידע</div>
+    <h1 class="section-title">מפת חשיבה – האור</h1>
+    <p class="section-lead">לחצי על כל ענף כדי לפתוח את הפירוט שלו 👇</p>
+
+    <div class="mindmap-container" style="overflow:visible;background:none;border:none;padding:0;">
+
+<style>
+.mm-wrap { display:flex; flex-direction:column; gap:1rem; }
+.mm-branch {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.25s;
+}
+.mm-branch:hover { border-color: rgba(201,168,76,0.4); }
+.mm-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+.mm-header::after {
+  content: '▾';
+  position: absolute;
+  left: 1.4rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+  transition: transform 0.25s;
+}
+.mm-branch.open .mm-header::after { transform: rotate(180deg); }
+.mm-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.mm-title {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  flex: 1;
+}
+.mm-sub-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.mm-body {
+  display: none;
+  padding: 0 1.4rem 1.4rem;
+}
+.mm-branch.open .mm-body { display: block; }
+.mm-nodes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap: 0.8rem;
+}
+.mm-node {
+  background: var(--deep);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.mm-node-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.mm-node-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.mm-node-formula {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 0.88rem;
+  color: var(--gold);
+  margin-top: 0.35rem;
+}
+.mm-center {
+  text-align: center;
+  padding: 1.8rem;
+  background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+  border: 2px solid var(--gold);
+  border-radius: 16px;
+  margin-bottom: 0.5rem;
+}
+.mm-center-title {
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+.mm-rainbow {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #8B00FF, #0000FF, #00BBFF, #00FF88, #FFFF00, #FF8800, #FF0000);
+  margin: 0.5rem auto;
+  width: 180px;
+}
+</style>
+
+<div class="mm-center">
+  <div class="mm-center-title">☀ האור</div>
+  <div style="color:var(--text-muted);font-size:0.9rem;">קרינה אלקטרומגנטית – גל וחלקיק בו-זמנית</div>
+  <div class="mm-rainbow"></div>
+  <div style="font-size:0.78rem;color:var(--gold-dark);">c = 299,792,458 מ׳/ש׳</div>
+</div>
+
+<div class="mm-wrap">
+
+  <!-- ענף 1 – מאפיינים -->
+  <div class="mm-branch open">
+    <div class="mm-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mm-dot" style="background:#C9A84C;"></div>
+      <div>
+        <div class="mm-title" style="color:#C9A84C;">מאפיינים בסיסיים</div>
+        <div class="mm-sub-text">מהירות · אורך גל · תדירות · גל וחלקיק</div>
+      </div>
+    </div>
+    <div class="mm-body">
+      <div class="mm-nodes">
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#F0D080;">⚡ מהירות האור</div>
+          <div class="mm-node-desc">הכי מהיר שיש ביקום – אין שום דבר יותר מהיר. קבוע טבע קבוע.</div>
+          <div class="mm-node-formula">c = 299,792,458 מ׳/ש׳</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#F0D080;">〰 אורך גל ותדירות</div>
+          <div class="mm-node-desc">כל צבע = אורך גל אחר. ככל שהגל קצר יותר, הוא "מרטט" יותר מהר.</div>
+          <div class="mm-node-formula">c = λ · f</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#F0D080;">⚛ גל וחלקיק ביחד</div>
+          <div class="mm-node-desc">האור לא "בחר צד" – הוא גם גל וגם חלקיק (פוטון), תלוי איך בודקים אותו.</div>
+          <div class="mm-node-formula">E = hf</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ענף 2 – ספקטרום -->
+  <div class="mm-branch open">
+    <div class="mm-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mm-dot" style="background:linear-gradient(90deg,#8B00FF,#FF0000);"></div>
+      <div>
+        <div class="mm-title" style="color:#BD7BFF;">הספקטרום – סוגי אורות</div>
+        <div class="mm-sub-text">גמא · רנטגן · UV · אור נראה · IR · מיקרו · רדיו</div>
+      </div>
+    </div>
+    <div class="mm-body">
+      <div style="margin-bottom:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">
+          <span>⬅ אורך גל קצר יותר, אנרגיה גבוהה יותר</span>
+          <span>אורך גל ארוך יותר, אנרגיה נמוכה יותר ➡</span>
+        </div>
+        <div style="height:12px;border-radius:6px;background:linear-gradient(90deg,#222,#4FC3F7,#8B00FF,#0000FF,#00BBFF,#00FF88,#FFFF00,#FF8800,#FF0000,#FF4444,#888);"></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-muted);margin-top:4px;">
+          <span>גמא / רנטגן</span><span>UV</span><span>נראה</span><span>IR</span><span>מיקרו</span><span>רדיו</span>
+        </div>
+      </div>
+      <div class="mm-nodes">
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#4FC3F7;">☢ קרני גמא ורנטגן</div>
+          <div class="mm-node-desc">אנרגיה עצומה. רנטגן – צולם לנו את העצמות. גמא – יוצא מגרעינים אטומיים.</div>
+          <div class="mm-node-formula">מתחת ל-100nm</div>
+        </div>
+        <div class="mm-node" style="border-color:rgba(139,0,255,0.3);">
+          <div class="mm-node-title" style="color:#BD7BFF;">🔆 על-סגול (UV)</div>
+          <div class="mm-node-desc">לא רואים, אבל הוא שם. גורם לשיזוף ועלול להזיק לעור. קרם הגנה חוסם UV.</div>
+          <div class="mm-node-formula">100–380nm</div>
+        </div>
+        <div class="mm-node" style="border-color:rgba(240,208,128,0.3);">
+          <div class="mm-node-title" style="color:#F0D080;">🌈 אור נראה לעין</div>
+          <div class="mm-node-desc">החלק הקטנטן שהעיניים שלנו קולטות. סגול עד אדום – כל צבעי הקשת.</div>
+          <div class="mm-node-formula">380–780nm</div>
+        </div>
+        <div class="mm-node" style="border-color:rgba(255,100,0,0.3);">
+          <div class="mm-node-title" style="color:#FF8855;">🌡 תת-אדום (IR)</div>
+          <div class="mm-node-desc">אנחנו לא רואים אותו אבל מרגישים אותו כחום. השלט של הטלוויזיה שולח IR. גם גלאי השריפה.</div>
+          <div class="mm-node-formula">780nm – 1mm</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#81C784;">📡 מיקרו ורדיו</div>
+          <div class="mm-node-desc">הכי ארוכים. גלי רדיו עושים AM/FM, מיקרו עושה WiFi, 5G ומיקרוגל במטבח.</div>
+          <div class="mm-node-formula">מ-1mm עד ק"מ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ענף 3 – תופעות -->
+  <div class="mm-branch">
+    <div class="mm-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mm-dot" style="background:#4FC3F7;"></div>
+      <div>
+        <div class="mm-title" style="color:#4FC3F7;">מה קורה לאור בדרך?</div>
+        <div class="mm-sub-text">שבירה · השתקפות · התאבכות · פיזור</div>
+      </div>
+    </div>
+    <div class="mm-body">
+      <div class="mm-nodes">
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#4FC3F7;">↗ שבירה</div>
+          <div class="mm-node-desc">כשאור עובר בין חומרים שונים (מים/זכוכית) הוא "מתכופף". זה למה כפית נראית שבורה בכוס מים.</div>
+          <div class="mm-node-formula">חוק סנל: n₁sinθ₁ = n₂sinθ₂</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#4FC3F7;">↙ השתקפות</div>
+          <div class="mm-node-desc">אור קופץ חזרה מפני שטח חלק. זה איך מראה עובד, וגם סיב אופטי!</div>
+          <div class="mm-node-formula">זווית נפילה = זווית החזרה</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#4FC3F7;">〰 התאבכות</div>
+          <div class="mm-node-desc">שני גלים שנפגשים – יכולים לחזק או לבטל אחד את השני. בסיס לניסוי שני הסדקים.</div>
+          <div class="mm-node-formula">ניסוי יאנג 1801</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#4FC3F7;">🌅 פיזור ריילי</div>
+          <div class="mm-node-desc">כחול מתפזר הרבה יותר מאדום – לכן השמיים כחולים. בשקיעה האור עושה נתיב ארוך, הכחול נבלע ונשאר אדום-כתום.</div>
+          <div class="mm-node-formula">עוצמה ∝ 1/λ⁴</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ענף 4 – קוונטים -->
+  <div class="mm-branch">
+    <div class="mm-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mm-dot" style="background:#FFB74D;"></div>
+      <div>
+        <div class="mm-title" style="color:#FFB74D;">קוונטים ופוטונים</div>
+        <div class="mm-sub-text">פלנק · אינשטיין · אפקט פוטואלקטרי · QED</div>
+      </div>
+    </div>
+    <div class="mm-body">
+      <div class="mm-nodes">
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FFB74D;">✨ הפוטון</div>
+          <div class="mm-node-desc">חלקיק האור. מסה שלו אפסית אבל יש לו אנרגיה. לא מאט ולא עוצר – רק נע במהירות c.</div>
+          <div class="mm-node-formula">E = hf · p = h/λ</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FFB74D;">⚡ האפקט הפוטואלקטרי</div>
+          <div class="mm-node-desc">אינשטיין גילה שאור "מכה" אלקטרונים מחוץ למתכת. זה הוכיח שאור מגיע בחבילות (פוטונים) ולא כזרם רציף.</div>
+          <div class="mm-node-formula">Ek = hf − φ (1905)</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FFB74D;">🔬 QED – פיינמן</div>
+          <div class="mm-node-desc">התיאוריה המדויקת ביותר שיש למדע. מסבירה בדיוק איך אור ואלקטרונים מתקשרים.</div>
+          <div class="mm-node-formula">פרס נובל 1965</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ענף 5 – יישומים -->
+  <div class="mm-branch">
+    <div class="mm-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mm-dot" style="background:#81C784;"></div>
+      <div>
+        <div class="mm-title" style="color:#81C784;">יישומים בחיי היומיום</div>
+        <div class="mm-sub-text">לייזר · LED · סיב אופטי · קרם הגנה · שלט</div>
+      </div>
+    </div>
+    <div class="mm-body">
+      <div class="mm-nodes">
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#81C784;">💡 LED ולייזר</div>
+          <div class="mm-node-desc">LED עובד על עקרון קוונטי – אלקטרון "קופץ" ופולט פוטון. לייזר = פוטונים מסונכרנים בדיוק.</div>
+          <div class="mm-node-formula">תאורה · ניתוחים · ברקוד</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#81C784;">🌐 סיב אופטי</div>
+          <div class="mm-node-desc">האינטרנט שלנו עובר דרך זכוכית דקה ב-300,000 ק"מ לשנייה. האור עושה השתקפות מלאה פנימית ולא יוצא.</div>
+          <div class="mm-node-formula">השתקפות מלאה פנימית</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#81C784;">🕹 שלט טלוויזיה (IR)</div>
+          <div class="mm-node-desc">שולח אות בתת-אדום שאנחנו לא רואים. גלאי השריפה בבית עובד בדיוק אותו הדבר.</div>
+          <div class="mm-node-formula">780nm+ (IR)</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#81C784;">🧴 קרם הגנה</div>
+          <div class="mm-node-desc">חוסם קרינת UV שאנחנו לא רואים אבל שיכולה להזיק לעור. SPF = כמה UV הוא חוסם.</div>
+          <div class="mm-node-formula">UV ≤ 380nm</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#81C784;">☀ פאנל סולארי</div>
+          <div class="mm-node-desc">עובד על האפקט הפוטואלקטרי שאינשטיין גילה! פוטון מהשמש מכה אלקטרון ומייצר חשמל.</div>
+          <div class="mm-node-formula">פוטון → חשמל</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ענף 6 – היסטוריה -->
+  <div class="mm-branch">
+    <div class="mm-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="mm-dot" style="background:#FF8A65;"></div>
+      <div>
+        <div class="mm-title" style="color:#FF8A65;">הסיפור ההיסטורי</div>
+        <div class="mm-sub-text">ניוטון → יאנג → מקסוול → פלנק → אינשטיין</div>
+      </div>
+    </div>
+    <div class="mm-body">
+      <div class="mm-nodes">
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FF8A65;">🍎 ניוטון (1666)</div>
+          <div class="mm-node-desc">לקח פריזמה ופיצל אור שמש לכל הצבעים. חשב שאור מורכב מחלקיקים זעירים ("קורפוסקולות").</div>
+          <div class="mm-node-formula">Opticks, 1704</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FF8A65;">〰 יאנג (1801)</div>
+          <div class="mm-node-desc">ניסוי שני הסדקים הוכיח שאור הוא גל. ניוטון טעה – לפחות בחלק.</div>
+          <div class="mm-node-formula">דוגמת התאבכות</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FF8A65;">⚡ מקסוול (1865)</div>
+          <div class="mm-node-desc">כתב 4 משוואות שאיחדו חשמל, מגנטיות ואור לדבר אחד. חישב את מהירות האור מנוסחאות בלבד!</div>
+          <div class="mm-node-formula">גל אלקטרומגנטי</div>
+        </div>
+        <div class="mm-node">
+          <div class="mm-node-title" style="color:#FF8A65;">💡 אינשטיין (1905)</div>
+          <div class="mm-node-desc">הסביר שאור מגיע בחבילות (פוטונים). פרס נובל על זה – לא על היחסות!</div>
+          <div class="mm-node-formula">Ek = hf − φ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /mm-wrap -->
+    </div><!-- /mindmap-container -->
+  </div><!-- /section -->
+</div><!-- /page#mindmap -->
+
+<!-- ═══════════════ LINKS ═══════════════ -->
+<div class="page" id="links">
+  <div class="section">
+    <div class="section-tag">מקורות</div>
+    <h1 class="section-title">קישורים ומאמרים</h1>
+    <p class="section-lead">משאבים מומלצים לחקר מעמיק של הנושא – סרטונים, מאמרים מדעיים וסימולציות אינטראקטיביות שבחרתי.</p>
+
+    <h3 style="font-family:'Frank Ruhl Libre',serif;color:var(--gold-light);margin-bottom:1rem;font-size:1.2rem;">🎬 סרטונים מומלצים</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+          <iframe src="https://www.youtube.com/embed/6Q4_nl0ICao" frameborder="0" allowfullscreen
+            style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+        </div>
+        <div style="padding:1rem;">
+          <h4 style="color:var(--text);font-size:0.95rem;margin-bottom:0.3rem;">The double slit experiment</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);">הסבר ויזואלי מעולה של ניסוי שני הסדקים</p>
+          <div style="font-size:0.75rem;color:var(--gold);margin-top:0.4rem;">Dr. Quantum · YouTube</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+          <iframe src="https://www.youtube.com/embed/6VqNz4oT0ng" frameborder="0" allowfullscreen
+            style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+        </div>
+        <div style="padding:1rem;">
+          <h4 style="color:var(--text);font-size:0.95rem;margin-bottom:0.3rem;">The Photoelectric Effect</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);">הסבר מעמיק על האפקט הפוטואלקטרי ופוטונים</p>
+          <div style="font-size:0.75rem;color:var(--gold);margin-top:0.4rem;">Physics Online · YouTube</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+          <iframe src="https://www.youtube.com/embed/jjy-eqWM38g" frameborder="0" allowfullscreen
+            style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+        </div>
+        <div style="padding:1rem;">
+          <h4 style="color:var(--text);font-size:0.95rem;margin-bottom:0.3rem;">Light: Crash Course Astronomy #24</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);">הספקטרום האלקטרומגנטי באסטרונומיה</p>
+          <div style="font-size:0.75rem;color:var(--gold);margin-top:0.4rem;">CrashCourse · YouTube</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+          <iframe src="https://www.youtube.com/embed/FSEJ4YLXtt8" frameborder="0" allowfullscreen
+            style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+        </div>
+        <div style="padding:1rem;">
+          <h4 style="color:var(--text);font-size:0.95rem;margin-bottom:0.3rem;">Why Is the Speed of Light What It Is? Maxwell Visualized</h4>
+          <p style="font-size:0.82rem;color:var(--text-muted);">הסבר ויזואלי על משוואות מקסוול ומהירות האור</p>
+          <div style="font-size:0.75rem;color:var(--gold);margin-top:0.4rem;">Arvin Ash · YouTube</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Frank Ruhl Libre',serif;color:var(--gold-light);margin-bottom:1rem;font-size:1.2rem;">🌐 אתרים ומאמרים</h3>
+    <div class="links-grid" style="margin-bottom:2.5rem;">
+      <a class="link-card" href="https://phet.colorado.edu/en/simulations/geometric-optics" target="_blank">
+        <div class="link-icon">🔬</div>
+        <div>
+          <h4>PhET – Geometric Optics</h4>
+          <p>סימולציה אינטראקטיבית של עדשות ומראות</p>
+          <div class="url">phet.colorado.edu</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://phet.colorado.edu/en/simulations/wave-interference" target="_blank">
+        <div class="link-icon">〰</div>
+        <div>
+          <h4>PhET – Wave Interference</h4>
+          <p>סימולציה של התאבכות גלי אור</p>
+          <div class="url">phet.colorado.edu</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://www.physicsclassroom.com/class/light" target="_blank">
+        <div class="link-icon">📖</div>
+        <div>
+          <h4>The Physics Classroom – Light</h4>
+          <p>הסברים מפורטים ונוסחאות על אור ואופטיקה</p>
+          <div class="url">physicsclassroom.com</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://www.khanacademy.org/science/physics/light-waves" target="_blank">
+        <div class="link-icon">🎓</div>
+        <div>
+          <h4>Khan Academy – Light Waves</h4>
+          <p>שיעורים מלאים על גלי אור בעברית ואנגלית</p>
+          <div class="url">khanacademy.org</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://www.britannica.com/science/light" target="_blank">
+        <div class="link-icon">📚</div>
+        <div>
+          <h4>Britannica – Light</h4>
+          <p>ערך מקיף ומפורט על האור</p>
+          <div class="url">britannica.com</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://www.newscientist.com/subject/physics/" target="_blank">
+        <div class="link-icon">📰</div>
+        <div>
+          <h4>New Scientist – Physics</h4>
+          <p>חדשות מחקר עדכניות בפיזיקה ואופטיקה</p>
+          <div class="url">newscientist.com</div>
+        </div>
+      </a>
+    </div>
+   </div>
+</div>
+
+<!-- ═══════════════ SUMMARY ═══════════════ -->
+<div class="page" id="summary">
+  <div class="section">
+    <div class="section-tag">סיכום ורפלקציה</div>
+    <h1 class="section-title">סיכום ומסקנות</h1>
+    <p class="section-lead">מסקנותיי מהחקר, תהליך הלמידה שלי, ומשוב עמיתים – הרפלקציה האישית שלי על מסע החקר.</p>
+
+    <div class="summary-box">
+      <h3>מה למדנו: האור – בין גל לחלקיק</h3>
+      <p>לפני שחקרתי את הנושא, חשבתי על אור בצורה פשוטה: זה מה שמאיר חדרים. לאחר החקר הבנתי שהאור הוא אחת התופעות המורכבות והפרדוקסליות ביותר בטבע.</p>
+      <p>המושג שהכי הפתיע אותי הוא <strong style="color:var(--text);">דואליות גל-חלקיק</strong>: לא ניתן להחליט "בסופו של דבר" מה האור – גל או חלקיק. הוא גם וגם, תלוי בניסוי. זו אינה מגבלה של הידע שלנו, אלא תכונה של האור עצמו.</p>
+      <p>עוד תובנה חשובה: הספקטרום האלקטרומגנטי הוא עצום לאין שיעור ביחס לחלק הנראה לנו. האור הנראה הוא אי קטנטן בים רחב של קרינה – מגלי רדיו ארוכים לקרני גמא קצרות ועוצמתיות.</p>
+    </div>
+
+    <div class="summary-box">
+      <h3>תהליך הלמידה – בין קושי לגילוי</h3>
+      <p><strong style="color:var(--text);">מה היה קשה עבורי:</strong> להבין את מכניקת הקוונטים ב"שפה יומיומית" היה מאתגר. הרעיון שאלקטרון "לא יודע" איפה הוא עד שמודדים אותו – ושמדידה עצמה משנה את המציאות – נשמע כמו פנטזיה. לקח לי זמן להבין שזה לא מטפורה, זו מתמטיקה שעובדת.</p>
+      <p><strong style="color:var(--text);">מה עזר לי:</strong> סימולציות PhET עזרו להמחיש השתקפות ושבירה. ניסוי שני הסדקים הפך ממשפט בספר לדמיה ויזואלית שניתן לעקוב אחריה. ביוגרפיות של המדענים הוסיפו ממד אנושי לנוסחאות.</p>
+      <p><strong style="color:var(--text);">מה הייתי רוצה לחקור עוד:</strong> אופטיקה קוונטית – כיצד לייזרים עובדים ברמה קוונטית, ואיך עקרון אי הוודאות של הייזנברג מגביל את מדידות האור.</p>
+    </div>
+
+    <div class="summary-box">
+      <h3>הקשר לחיי היומיום</h3>
+      <p>מה שהפתיע אותי הכי הרבה הוא עד כמה הפיזיקה של האור נמצאת בכל מקום: הסמארטפון מחובר לאינטרנט דרך <strong style="color:var(--text);">סיבים אופטיים</strong> שעובדים על השתקפות מלאה פנימית. ה<strong style="color:var(--text);">LED</strong> בנורה עובד על עיקרון קוונטי. <strong style="color:var(--text);">גלאי השריפה</strong> בבית משתמש בתת-אדום. ה<strong style="color:var(--text);">קרם הגנה</strong> שמשמשים בקיץ מגן מ-UV.</p>
+      <p>הפיזיקה של האור אינה תיאוריה מופשטת – היא הבסיס של תשתית הטכנולוגיה המודרנית כולה.</p>
+    </div>
+
+    <hr class="divider" style="max-width:100%;">
+
+    <h2 style="font-family:'Frank Ruhl Libre',serif;font-size:1.6rem;margin-bottom:1.5rem;color:var(--text);">משוב עצמי ועמיתים</h2>
+
+    <div class="feedback-block">
+      <h4>משוב עצמי</h4>
+      <p><strong style="color:var(--text);">חוזקות:</strong> הצלחתי לכסות טווח רחב של נושאים – מהיסטוריה ועד לפיזיקה קוונטית – ולהביא אותם ברמה שניתנת להבנה. השתדלתי לא להישאר ברמה תיאורית בלבד אלא להביא נוסחאות ולהסביר את משמעותן הפיזיקלית.</p>
+      <p><strong style="color:var(--text);">מה הייתי משפרת:</strong> הייתי מרחיבה את סעיף הניסויים הביתיים – ניסויים שניתן לבצע בעצמי עם פנס ופריזמה. כמו כן, הייתי מוסיפה קשר חזק יותר בין הנושאים השונים כדי שהמעבר ביניהם יהיה אורגני יותר.</p>
+    </div>
+
+    <div class="feedback-block">
+      <h4>משוב מחברה לכיתה – שאלה על ניסוי שני הסדקים</h4>
+      <p>השאלה שנשאלתי: "אם אור הוא גם חלקיק, למה בניסוי שני הסדקים עם פוטון בודד עדיין יוצאת דוגמת גל?"</p>
+      <p>תשובתי: הפוטון הבודד "עובר דרך שני הסדקים בו-זמנית" – כלומר, הפונקציה הגלית שלו עוברת דרך שניהם ומתאבכת עם עצמה. רק כשהפוטון נמדד (פוגע במסך), הוא "מחליט" איפה להיות. לכן, גם פוטון בודד שמשוגר אחד אחד ילאחד – עם הזמן – את דוגמת ההתאבכות.</p>
+    </div>
+
+    <div class="feedback-block">
+      <h4>משוב מחברה לכיתה – על הסבר הספקטרום</h4>
+      <p>עמיתה ציינה שההסבר על הספקטרום היה ברור אך חסר דוגמאות ביתיות. בעקבות המשוב הוספתי דוגמאות ממשיות – מדוע שמיים כחולים (פיזור ריילי), מדוע שקיעה אדומה, ומדוע הקשת היא בסדר ספציפי – שמחברות בין הפיזיקה לתופעות יומיומיות.</p>
+    </div>
+
+    <div style="background:var(--surface3);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:2rem;text-align:center;">
+      <div style="font-family:'Frank Ruhl Libre',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;">אור הוא</div>
+      <div style="font-family:'Frank Ruhl Libre',serif;font-size:1.3rem;color:var(--text-muted);margin-top:0.4rem;">הגל שהוא חלקיק, החלקיק שהוא גל.</div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-top:1.5rem;">טוהר בוטבול · י״ב2 · עבודת אוצרות בפיזיקה</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>האור</strong> · אוצרות דיגיטלית בפיזיקה · טוהר בוטבול · י״ב2 ·
+  <span style="color:rgba(201,168,76,0.5);">c = 299,792,458 m/s</span>
+</footer>
+
+<script>
+  var _openStat = null;
+  function toggleStat(id) {
+    var panel = document.getElementById(id);
+    var btn = document.getElementById(id + '-btn');
+    if (_openStat && _openStat !== id) {
+      var prev = document.getElementById(_openStat);
+      var prevBtn = document.getElementById(_openStat + '-btn');
+      if (prev) prev.classList.remove('visible');
+      if (prevBtn) prevBtn.classList.remove('active');
+    }
+    if (panel.classList.contains('visible')) {
+      panel.classList.remove('visible');
+      btn.classList.remove('active');
+      _openStat = null;
+    } else {
+      panel.classList.add('visible');
+      btn.classList.add('active');
+      _openStat = id;
+      setTimeout(function(){ panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }, 50);
+    }
+  }
+  function closeStat(id) {
+    var panel = document.getElementById(id);
+    var btn = document.getElementById(id + '-btn');
+    if (panel) panel.classList.remove('visible');
+    if (btn) btn.classList.remove('active');
+    if (_openStat === id) _openStat = null;
+  }
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    const page = document.getElementById(id);
+    if (page) page.classList.add('active');
+    const navLink = document.getElementById('nav-' + id);
+    if (navLink) navLink.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
